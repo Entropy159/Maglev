@@ -1,14 +1,17 @@
 package archives.tater.maglev.block;
 
 import archives.tater.maglev.HasOxidationLevel;
+import eu.pb4.polymer.core.api.block.PolymerBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.block.RailBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import xyz.nucleoid.packettweaker.PacketContext;
 
-public class OxidizableRailBlock extends RailBlock implements Oxidizable, HasOxidationLevel {
+public class OxidizableRailBlock extends RailBlock implements Oxidizable, HasOxidationLevel, PolymerBlock {
     private final OxidationLevel oxidationLevel;
 
     public OxidizableRailBlock(OxidationLevel oxidationLevel, Settings settings) {
@@ -29,5 +32,10 @@ public class OxidizableRailBlock extends RailBlock implements Oxidizable, HasOxi
     @Override
     public OxidationLevel getDegradationLevel() {
         return oxidationLevel;
+    }
+
+    @Override
+    public BlockState getPolymerBlockState(BlockState blockState, PacketContext packetContext) {
+        return Blocks.RAIL.getStateWithProperties(blockState);
     }
 }

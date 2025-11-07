@@ -1,17 +1,20 @@
 package archives.tater.maglev.block;
 
 import archives.tater.maglev.HasOxidationLevel;
+import eu.pb4.polymer.core.api.block.PolymerBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Oxidizable;
 import net.minecraft.block.PoweredRailBlock;
 import net.minecraft.entity.vehicle.AbstractMinecartEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import xyz.nucleoid.packettweaker.PacketContext;
 
 import static archives.tater.maglev.init.MaglevDataAttachments.SPEED_MULTIPLIER;
 
-public class OxidizablePoweredRailBlock extends PoweredRailBlock implements Oxidizable, HasOxidationLevel, VariantPoweredRail {
+public class OxidizablePoweredRailBlock extends PoweredRailBlock implements Oxidizable, HasOxidationLevel, VariantPoweredRail, PolymerBlock {
     private final OxidationLevel oxidationLevel;
 
     public OxidizablePoweredRailBlock(OxidationLevel oxidationLevel, Settings settings) {
@@ -49,5 +52,10 @@ public class OxidizablePoweredRailBlock extends PoweredRailBlock implements Oxid
             minecart.setAttached(SPEED_MULTIPLIER, OxidizablePoweredRailBlock.getSpeedMultiplier(oxidizable.getDegradationLevel()));
         else
             minecart.removeAttached(SPEED_MULTIPLIER);
+    }
+
+    @Override
+    public BlockState getPolymerBlockState(BlockState blockState, PacketContext packetContext) {
+        return Blocks.POWERED_RAIL.getStateWithProperties(blockState);
     }
 }
